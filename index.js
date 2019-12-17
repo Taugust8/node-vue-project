@@ -2,6 +2,7 @@
 const express = require('express')
 const cors = require('cors')
 const axios = require('axios')
+const session = require('express-session')
 
 // Repositories
 const articles = require('./articles.js')
@@ -31,8 +32,8 @@ app.get('/', async function (req, res) {
 
 // Tous les articles
 app.get('/articles', async function (req, res) {
-  const users = await articles.getArticles();
-  res.json(users)
+  const articles = await articles.getArticles();
+  res.json(articles)
 })
 
 // Un article

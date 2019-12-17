@@ -1,6 +1,5 @@
-
-const express 	= require('../calc/node_modules/express')
-const session 	= require('../calc/node_modules/express-session')
+// Connexion BD
+const bd = require('./bd.js')
 
 const passport 	= require('passport')
 const jwt 		= require('jsonwebtoken')
@@ -17,27 +16,19 @@ const urlEncodedParser = bodyParser.urlencoded({
 const app = express()
 const router = express.Router()
 
+async function getUtilisateurs() {
+	return await axios.get(bd.address+'/utilisateurs', bd.headers)
+	.then(function (response) {
+		return response.data
+	})
+	.catch(function (error) {
+		console.error(error)
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
+	})
+}
+
 /* UTILISATEURS */
-const users = [
-	{
-		id : 0,
-		name : 'John Doe',
-		login : 'jdoe',
-		password : '1234'
-	},
-	{
-		id : 1,
-		name : 'Karl Marx',
-		login : 'kmarx',
-		password : '1234'
-	},
-	{
-		id : 2,
-		name : 'General Kenobi',
-		login : 'gk',
-		password : '1234'
-	}
-]
+const users = await getUtilisateurs();
 
 //Middleware
 router.use('/login', function(req, res, next) {
