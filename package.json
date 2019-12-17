@@ -1,7 +1,7 @@
 {
-  "name": "heroku",
+  "name": "node-vue-project",
   "version": "1.0.0",
-  "description": "",
+  "description": "TP node et vue IUT",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Taugust8/Projet_Node-JS.git"
+    "url": "git+https://github.com/Taugust8/node-vue-project.git"
   },
-  "author": "",
+  "author": "SCHALLER Mathis && AUGUST Théo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Taugust8/Projet_Node-JS/issues"
+    "url": "https://github.com/Taugust8/node-vue-project/issues"
   },
-  "homepage": "https://github.com/Taugust8/Projet_Node-JS#readme",
+  "homepage": "https://github.com/Taugust8/node-vue-project#readme",
   "dependencies": {
     "axios": "^0.19.0",
     "cors": "^2.8.5",
