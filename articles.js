@@ -1,10 +1,38 @@
-function getArticle(id) {
+// Connexion BD
+const bd = require('./bd.js')
+
+// Requetes
+const axios = require('axios')
+
+/**
+ * Va chercher un article particulier.
+ * @param id Identifiant de l'article à récupérer 
+ */
+async function getArticle(id) {
 	return id
 }
-function getArticles() {
-	return 0
+
+/**
+ * Va chercher les articles.
+ */
+async function getArticles() {
+	return await axios.get(bd.address+'/articles', bd.headers)
+	.then(function (response) {
+		return response.data
+	})
+	.catch(function (error) {
+		console.error(error)
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
+	})
 }
-function add(titre,description,date) {
+
+/**
+ * Ajoute un article.
+ * @param titre Titre de l'article 
+ * @param desc Description de l'article 
+ * @param date Date de création de l'article 
+ */
+async function add(titre,desc,date) {
 	return {
 		'id' : 0,
 		'titre' : titre,
@@ -12,13 +40,25 @@ function add(titre,description,date) {
 		'date' : date
 	}
 }
-function remove(id) {
-	return id
-}
-function edit(id) {
+
+/**
+ * Supprime un article.
+ * @param id Identifiant de l'article à supprimer 
+ */
+async function remove(id) {
 	return id
 }
 
+/**
+ * Modifie un article.
+ * @param id Identifiant de l'article à modifier 
+ */
+async function edit(id) {
+	return id
+}
+
+
+// Exports des fonctionnalités
 module.exports = {
 	getArticle: getArticle,
 	getArticles: getArticles,
