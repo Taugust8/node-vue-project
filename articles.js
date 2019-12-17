@@ -1,6 +1,12 @@
 // Connexion BD
 const bd = require('./bd.js')
 
+// Requetes DB doc
+//https://restdb.io/docs/rest-api#restdb
+
+// Listes des requetes sous API Docs
+//https://nodevueproject-c032.restdb.io/home/db/nodevueproject-c032/cards/5df8e275688c775700005abf?devmode=true
+
 // Requetes
 const axios = require('axios')
 
@@ -9,7 +15,14 @@ const axios = require('axios')
  * @param id Identifiant de l'article à récupérer 
  */
 async function getArticle(id) {
-	return id
+	return await axios.get(bd.address+'/articles/'+id, bd.headers)
+	.then(function (response) {
+		return response.data
+	})
+	.catch(function (error) {
+		console.error(error)
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
+	})
 }
 
 /**
@@ -38,7 +51,16 @@ async function add(titre,desc,date) {
 		'titre' : titre,
 		'description' : description,
 		'date' : date
-	}
+	}/*
+	axios.post(
+        URL,
+        {headers: {
+          Authorization: authorizationToken
+        },
+        data:{
+          source:source
+        }}
+      );*/
 }
 
 /**
@@ -46,7 +68,16 @@ async function add(titre,desc,date) {
  * @param id Identifiant de l'article à supprimer 
  */
 async function remove(id) {
-	return id
+	return id/*
+	axios.delete(
+        URL,
+        {headers: {
+          Authorization: authorizationToken
+        },
+        data:{
+          source:source
+        }}
+      );*/
 }
 
 /**
@@ -54,7 +85,16 @@ async function remove(id) {
  * @param id Identifiant de l'article à modifier 
  */
 async function edit(id) {
-	return id
+	return id/*
+	axios.put( //ou patch
+        URL,
+        {headers: {
+          Authorization: authorizationToken
+        },
+        data:{
+          source:source
+        }}
+      );*/
 }
 
 
