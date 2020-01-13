@@ -30,22 +30,11 @@ app.get('/', async function (req, res) {
 	res.json(users)
 })
 
-// Tous les articles
-app.get('/articles', async function (req, res) {
-	const articles = await articlesRepository.getArticles();
-	res.json(articles)
-})
-
-// Un article
-app.get('/article/:id', async function (req, res) {
-	const id = req.params.id
-	const articles = await articlesRepository.getArticle(id);
-	res.json(articles)
-})
-
 // Ajouter article
 app.get('/article/add', async function (req, res) {
-	res.json({})
+	//res.json({})
+	const article = await articlesRepository.addArticle('Mon article', 'Ma description', '21-08-1996 16:35');
+	res.json(article)
 })
 
 // Supprimer article
@@ -57,6 +46,19 @@ app.get('/article/remove/:id', async function (req, res) {
 app.get('/article/edit/:id', async function (req, res) {
 	res.json({})
 
+})
+
+// Un article
+app.get('/article/:id', async function (req, res) {
+	const id = req.params.id
+	const articles = await articlesRepository.getArticle(id);
+	res.json(articles)
+})
+
+// Tous les articles
+app.get('/articles', async function (req, res) {
+	const articles = await articlesRepository.getArticles();
+	res.json(articles)
 })
 
 // Creer compte

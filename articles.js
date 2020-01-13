@@ -46,13 +46,26 @@ async function getArticles() {
  * @param date Date de création de l'article 
  */
 async function add(titre,desc,date) {
-	return {
+	/*return {
 		'id' : 0,
 		'titre' : titre,
 		'description' : description,
 		'date' : date
-	}/*
-	axios.post(
+	}*/
+
+	let hdrs = bd.headers
+	hdrs.body = { titre: 'Mon article', description: 'Ma description', date: '21-08-1996 16:35' }
+	hdrs.json = true
+
+	return await axios.post(bd.address+'/articles', hdrs)
+	.then(function (response) {
+		return response.data
+	})
+	.catch(function (error) {
+		console.error(error)
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
+	})
+	/*axios.post(
         URL,
         {headers: {
           Authorization: authorizationToken
