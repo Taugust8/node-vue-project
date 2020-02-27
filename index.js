@@ -8,7 +8,7 @@ const session = require('express-session')
 const articlesRepository = require('./articles.js')
 
 // Constantes
-const PORT = process.env.PORT || 5000 // this is very important
+const PORT = process.env.PORT || 5000 // par défaut si non trouvé
 
 const secret = '%s3cReT_eNc0d3r!'
 /*const jwtOptions = {
@@ -32,20 +32,27 @@ app.get('/', async function (req, res) {
 
 // Ajouter article
 app.get('/article/add', async function (req, res) {
-	//res.json({})
-	const article = await articlesRepository.addArticle('Mon article', 'Ma description', '21-08-1996 16:35');
+	// recuperer des params
+	const titre= 'Mon article'
+	const desc = 'Ma description'
+	const date = '21-08-1996 16:35'
+
+	const article = await articlesRepository.addArticle(titre,desc,date);
 	res.json(article)
 })
 
 // Supprimer article
 app.get('/article/remove/:id', async function (req, res) {
-	res.json({})
+	const id = req.params.id
+	const articles = await articlesRepository.removeArticle(id);
+	res.json(articles)
 })
 
 // Modifier article
 app.get('/article/edit/:id', async function (req, res) {
-	res.json({})
-
+	const id = req.params.id
+	const articles = await articlesRepository.editArticle(id);
+	res.json(articles)
 })
 
 // Un article
@@ -63,7 +70,7 @@ app.get('/articles', async function (req, res) {
 
 // Creer compte
 app.get('/new-account', async function (req, res) {
-	res.json({})
+	res.json({error: "pas implementé."})
 })
 
 // Se connecter

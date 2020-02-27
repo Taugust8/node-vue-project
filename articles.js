@@ -46,18 +46,18 @@ async function getArticles() {
  * @param date Date de création de l'article 
  */
 async function add(titre,desc,date) {
-	/*return {
+	/*return { // forme d un article
 		'id' : 0,
 		'titre' : titre,
 		'description' : description,
 		'date' : date
 	}*/
 
-	let hdrs = bd.headers
-	hdrs.body = { titre: 'Mon article', description: 'Ma description', date: '21-08-1996 16:35' }
-	hdrs.json = true
+	let headers = bd.headers
+	headers.body = { /*id: '0', */titre: 'Mon article', description: 'Ma description', date: '2017-10-09T22:00:00.000Z' }
+	headers.json = true
 
-	return await axios.post(bd.address+'/articles', hdrs)
+	return await axios.post(bd.address+'/articles', headers)
 	.then(function (response) {
 		return response.data
 	})
@@ -65,15 +65,18 @@ async function add(titre,desc,date) {
 		console.error(error)
 		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
 	})
-	/*axios.post(
-        URL,
+
+	/*
+	axios.post(
+		URL,
         {headers: {
           Authorization: authorizationToken
         },
         data:{
           source:source
         }}
-      );*/
+    );
+    */
 }
 
 /**
@@ -98,7 +101,36 @@ async function remove(id) {
  * @param id Identifiant de l'article à modifier 
  */
 async function edit(id) {
-	return id/*
+	let headers = bd.headers
+	headers.body = { titre: 'Mon article', description: 'Ma description', date: '2017-10-09T22:00:00.000Z' }
+	headers.json = true
+
+	headers = {
+		headers: {
+			'cache-control': 'no-cache',
+	        'x-apikey': 'f357c01f6bcc8f8ff088604ca622201bb441b',
+	        'content-type': 'application/json' },
+	    body: { titre: 'Mon article', description: 'Ma description', date: '2017-10-09T22:00:00.000Z' },
+		json: true
+	}
+
+	const api = bd.address+'/articles/'+id
+
+	console.log(api)
+	console.log(headers)
+
+	return await axios.put(api, headers)
+	.then(function (response) {
+		return response.data
+	})
+	.catch(function (error) {
+		console.log("=============")
+		console.error(error)
+		console.log("=============")
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
+	})
+
+	/*
 	axios.put( //ou patch
         URL,
         {headers: {
