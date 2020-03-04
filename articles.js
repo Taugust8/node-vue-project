@@ -15,7 +15,9 @@ const axios = require('axios')
  * @param id Identifiant de l'article à récupérer 
  */
 async function getArticle(id) {
-	return await axios.get(bd.address+'/articles/'+id, bd.headers)
+	const api = bd.address+'/articles/'+id
+
+	return await axios.get(api, bd.headers)
 	.then(function (response) {
 		return response.data
 	})
@@ -29,7 +31,9 @@ async function getArticle(id) {
  * Va chercher les articles.
  */
 async function getArticles() {
-	return await axios.get(bd.address+'/articles', bd.headers)
+	const api = bd.address+'/articles'
+
+	return await axios.get(api, bd.headers)
 	.then(function (response) {
 		return response.data
 	})
@@ -45,38 +49,20 @@ async function getArticles() {
  * @param desc Description de l'article 
  * @param date Date de création de l'article 
  */
-async function add(titre,desc,date) {
-	/*return { // forme d un article
-		'id' : 0,
-		'titre' : titre,
-		'description' : description,
-		'date' : date
-	}*/
+async function add(data) {
+	const api = bd.address+'/articles'
 
 	let headers = bd.headers
-	headers.body = { /*id: '0', */titre: 'Mon article', description: 'Ma description', date: '2017-10-09T22:00:00.000Z' }
 	headers.json = true
 
-	return await axios.post(bd.address+'/articles', headers)
+	return await axios.post(api, data, headers)
 	.then(function (response) {
 		return response.data
 	})
-	.catch(function (error) {
-		console.error(error)
-		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
+	.catch(function (err) {
+		console.error(err)
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données.",})
 	})
-
-	/*
-	axios.post(
-		URL,
-        {headers: {
-          Authorization: authorizationToken
-        },
-        data:{
-          source:source
-        }}
-    );
-    */
 }
 
 /**
@@ -84,64 +70,39 @@ async function add(titre,desc,date) {
  * @param id Identifiant de l'article à supprimer 
  */
 async function remove(id) {
-	return id/*
-	axios.delete(
-        URL,
-        {headers: {
-          Authorization: authorizationToken
-        },
-        data:{
-          source:source
-        }}
-      );*/
+	const api = bd.address+'/articles/'+id
+
+	return await axios.delete(api, bd.headers)
+	.then(function (response) {
+		return response.data
+	})
+	.catch(function (err) {
+		console.error(err)
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données.",})
+	})
+	
 }
 
 /**
  * Modifie un article.
  * @param id Identifiant de l'article à modifier 
+ * @param newData Objet contenant les nouvelles valeurs
  */
-async function edit(id) {
-	let headers = bd.headers
-	headers.body = { titre: 'Mon article', description: 'Ma description', date: '2017-10-09T22:00:00.000Z' }
-	headers.json = true
-
-	headers = {
-		headers: {
-			'cache-control': 'no-cache',
-	        'x-apikey': 'f357c01f6bcc8f8ff088604ca622201bb441b',
-	        'content-type': 'application/json' },
-	    body: { titre: 'Mon article', description: 'Ma description', date: '2017-10-09T22:00:00.000Z' },
-		json: true
-	}
-
+async function edit(id, newData) {
 	const api = bd.address+'/articles/'+id
 
-	console.log(api)
-	console.log(headers)
+	let headers = bd.headers
+	headers.json = true
 
-	return await axios.put(api, headers)
+	return await axios.put(api, newData, headers)
 	.then(function (response) {
 		return response.data
 	})
-	.catch(function (error) {
-		console.log("=============")
-		console.error(error)
-		console.log("=============")
-		return ({error: "Une erreur c'est produite lors de la connexion à la base de données."})
+	.catch(function (err) {
+		console.error(err)
+		return ({error: "Une erreur c'est produite lors de la connexion à la base de données.",})
 	})
-
-	/*
-	axios.put( //ou patch
-        URL,
-        {headers: {
-          Authorization: authorizationToken
-        },
-        data:{
-          source:source
-        }}
-      );*/
 }
-
 
 // Exports des fonctionnalités
 module.exports = {

@@ -1,20 +1,7 @@
 // Connexion BD
 const bd = require('./bd.js')
-
-const passport 	= require('passport')
-const jwt 		= require('jsonwebtoken')
-
-const LocalStrategy = require('passport-local').Strategy
-const JwtStrategy 	= require('passport-jwt').Strategy
-const ExtractJwt 	= require('passport-jwt').ExtractJwt
-
-const bodyParser = require('body-parser')
-const urlEncodedParser = bodyParser.urlencoded({
-	extended: false
-}) 
-
 const app = express()
-const router = express.Router()
+
 
 async function getUtilisateurs() {
 	return await axios.get(bd.address+'/utilisateurs', bd.headers)
@@ -27,10 +14,8 @@ async function getUtilisateurs() {
 	})
 }
 
-/* UTILISATEURS */
-const users = await getUtilisateurs();
-
 //Middleware
+const router = express.Router()
 router.use('/login', function(req, res, next) {
 	console.log(req.body)
 	res.status(401).send('Erreur de connexion');
