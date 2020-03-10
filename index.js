@@ -14,15 +14,15 @@ const ExtractJwt 	= require('passport-jwt').ExtractJwt
 
 // Repositories
 const articlesRepository = require('./articles.js')
-const utilisateursRepository = require('./utilisateurs.js')
+//const utilisateursRepository = require('./utilisateurs.js')
 
 // Constantes
 const PORT = process.env.PORT || 5000 // par défaut si non trouvé
 
 const secret = '%s3cReT_eNc0d3r!'
 
-/* UTILISATEURS */
-const users = await utilisateursRepository.getUtilisateurs();
+// UTILISATEURS
+//const users = utilisateursRepository.getUtilisateurs();
 
 /*const jwtOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -31,8 +31,12 @@ const users = await utilisateursRepository.getUtilisateurs();
 
 // Config serveur
 const app = express()
+
 app.use(cors())
-app.use(bodyParser.urlencoded())
+//app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json())
 
 app.listen(PORT, function () {
@@ -41,7 +45,7 @@ app.listen(PORT, function () {
 
 // Routes
 app.get('/', async function (req, res) {
-	const users = await getUtilisateurs();
+	const users = await getUtilisateurs()
 	res.json(users)
 })
 
@@ -49,7 +53,7 @@ app.get('/', async function (req, res) {
 app.post('/article/add', async function (req, res) {
 	const data = req.body	
 
-	const nouvelArticle = await articlesRepository.addArticle(data);
+	const nouvelArticle = await articlesRepository.addArticle(data)
 	res.json(nouvelArticle)
 })
 
@@ -57,7 +61,7 @@ app.post('/article/add', async function (req, res) {
 app.get('/article/remove/:id', async function (req, res) {
 	const id = req.params.id
 
-	const articles = await articlesRepository.removeArticle(id);
+	const articles = await articlesRepository.removeArticle(id)
 	res.json(articles)
 })
 
@@ -67,7 +71,7 @@ app.post('/article/edit/:id', async function (req, res) {
 	const id = req.params.id
 	const data = req.body
 
-	const editedArticle = await articlesRepository.editArticle(id, data);
+	const editedArticle = await articlesRepository.editArticle(id, data)
 	
 	res.json(editedArticle)
 })
@@ -75,13 +79,13 @@ app.post('/article/edit/:id', async function (req, res) {
 // Un article
 app.get('/article/:id', async function (req, res) {
 	const id = req.params.id
-	const articles = await articlesRepository.getArticle(id);
+	const articles = await articlesRepository.getArticle(id)
 	res.json(articles)
 })
 
 // Tous les articles
 app.get('/articles', async function (req, res) {
-	const articles = await articlesRepository.getArticles();
+	const articles = await articlesRepository.getArticles()
 	res.json(articles)
 })
 
@@ -92,6 +96,6 @@ app.post('/new-account', async function (req, res) {
 
 // Se connecter
 app.post('/login', async function (req, res) {
-	const users = await articlesRepository.getArticles();
+	const users = await articlesRepository.getArticles()
 	res.json(users)
 })
