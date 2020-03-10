@@ -45,9 +45,7 @@ async function getArticles() {
 
 /**
  * Ajoute un article.
- * @param titre Titre de l'article 
- * @param desc Description de l'article 
- * @param date Date de création de l'article 
+ * @param data Les données de l'article (titre, description, date)
  */
 async function add(data) {
 	const api = bd.address+'/articles'
