@@ -1,14 +1,24 @@
-# node-vue-project
+# API blog d'articles
 
-## TP
-https://pierrecavalet-apidae.netlify.com/tp/final.html
+## Installation / Déploiement
+L'application se déploie automatiquement sur Heroku à l'adresse suivante :
+https://projet-nodejs-theo-mathis.herokuapp.com/
 
-## DB
-https://nodevueproject-c032.restdb.io/home/db/nodevueproject-c032/cards/5df8e275688c775700005abf?devmode=true
-https://nodevueproject-c032.restdb.io/rest
+Si vous souhaitez utiliser cette application comme squelette pour votre développement vous pouvez effectuer les commandes suivantes :
+> Prérequis : NodeJS -v 8.0.0 minimum
+ - `git clone https://github.com/Taugust8/node-vue-project.git`
+ - `cd node-vue-project`
+ - `npm install`
+ - `node index.js`
+ 
+ Et voilà ! Munissez-vous de PostMan ou tout autre logiciel vous permettant de tester votre API et vous pouvez commencer de coder.
 
-## Heroku app
-https://projet-nodejs-theo-mathis.herokuapp.com/articles
-
-## Heroku dashboard
-https://dashboard.heroku.com/apps/projet-nodejs-theo-mathis/deploy/githubhttps://dashboard.heroku.com/apps/projet-nodejs-theo-mathis/deploy/github
+## Utilisation
+Vous disposez des routes suivantes pour exploiter l'api :
+- **[GET]** /articles
+- **[GET]** /article/{id}
+- **[POST]** /article/add
+- **[GET]** /article/remove/{id}
+- **[POST]** /article/edit/{id}
+- **[POST]** /new-account
+- **[POST]** /login
