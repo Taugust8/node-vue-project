@@ -1,0 +1,29 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+	$.getJSON('https://projet-nodejs-theo-mathis.herokuapp.com/articles',
+	function(data2) {
+		console.log(data2)
+	});
+	
+	$.getJSON('https://projet-nodejs-theo-mathis.herokuapp.com/',
+	function(data) {
+		console.log(data)
+	});
+
+</script>
+
+</body>
+</html> 
+	

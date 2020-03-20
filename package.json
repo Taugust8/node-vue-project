@@ -1,0 +1,31 @@
+{
+  "name": "node-vue-project",
+  "version": "1.0.0",
+  "description": "TP node et vue IUT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taugust8/node-vue-project.git"
+  },
+  "author": "SCHALLER Mathis && AUGUST Théo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Taugust8/node-vue-project/issues"
+  },
+  "homepage": "https://github.com/Taugust8/node-vue-project#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "jsonwebtoken": "^8.5.1",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "bcrypt": "^3.0.6"
+  }
+}
