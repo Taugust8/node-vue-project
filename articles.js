@@ -1,12 +1,5 @@
 // Connexion BD
 const bd = require('./bd.js')
-
-// Requetes DB doc
-//https://restdb.io/docs/rest-api#restdb
-
-// Listes des requetes sous API Docs
-//https://nodevueproject-c032.restdb.io/home/db/nodevueproject-c032/cards/5df8e275688c775700005abf?devmode=true
-
 // Requetes
 const axios = require('axios')
 
@@ -89,10 +82,10 @@ async function remove(id) {
 async function edit(id, newData) {
 	const api = bd.address+'/articles/'+id
 
-	let headers = bd.headers
-	headers.json = true
+	let bdheaders = bd.headers
+	bdheaders.json = true
 
-	return await axios.put(api, newData, headers)
+	return await axios.put(api, newData, bdheaders)
 	.then(function (response) {
 		return response.data
 	})

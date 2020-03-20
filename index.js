@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5000 // Port Heroku || Local
 // Secret d'encodage
 const secret = '%s3cReT_eNc0d3r!'
 
-// Strategies Json WEB Token (Vérification d'accès aux pages)
+// Strategies json WEB Token (Vérification d'accès aux pages)
 const jwtStrategy = new JwtStrat({
 		jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 		secretOrKey: secret
@@ -29,12 +29,10 @@ const jwtStrategy = new JwtStrat({
 	async function(payload, callback) {
 
 		const users = await utilisateursRepository.getUtilisateurs()
-console.log(users)
 		const user = users.find(user => user.email === payload.email)
-console.log(payload)
 
 		if (user) {
-			callback(null, user) //return
+			callback(null, user)
 		} else {
 			callback(null, false)
 		}
@@ -45,34 +43,21 @@ passport.use(jwtStrategy)
 // Config serveur
 const app = express()
 
-// Handle CORS
+// Gestion des CORS
 app.use(cors())
 
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
   extended: true
-}));
+}))
 
 // Parse application/json
 app.use(bodyParser.json())
 
-// Server starts
+// Démarrage du serveur
 app.listen(PORT, function () {
 	console.log('Server listening port ' + PORT)
 })
-
-//var urlEncodedParser = bodyParser.urlencoded({ extended: false })
-
-/*
-//Middleware (inutile)
-const router = express.Router()
-router.use('/login', function(req, res, next) {
-	console.log(req.body)
-	res.status(401).send('Erreur de connexion')
-	next()
-})
-*/
-
 
 
 // ROUTES //
@@ -86,13 +71,17 @@ app.get('/articles', async function (req, res) {
 // Afficher un article
 app.get('/article/:id', async function (req, res) {
 	const id = req.params.id
-	const articles = await articlesRepository.getArticle(id)
-	res.json(articles)
+	const article = await articlesRepository.getArticle(id)
+	res.json(article)
 })
 
 // Ajouter article (jwt)
 app.post('/article/add', passport.authenticate('jwt', { session: false}), async function (req, res) {
 	const data = req.body	
+
+	// Défini l'utilisateur connecté comme auteur de l'article
+	const userid = req.user.id
+	data.id_auteur = userid
 
 	const nouvelArticle = await articlesRepository.addArticle(data)
 	res.json(nouvelArticle)
@@ -102,19 +91,34 @@ app.post('/article/add', passport.authenticate('jwt', { session: false}), async 
 app.get('/article/remove/:id', passport.authenticate('jwt', { session: false}), async function (req, res) {
 	const id = req.params.id
 
-	const articles = await articlesRepository.removeArticle(id)
-	res.json(articles)
+	// Vérification que la modification soit faite par l'auteur
+	const userid = req.user.id
+
+	if (await isAuteurArticle(userid, id)) {
+		const article = await articlesRepository.removeArticle(id)
+		res.json(article)
+	} else {
+		res.json({ error: 'Vous n\'êtes pas l\'auteur de cet article.' })
+	}
 })
 
 // Modifier article (jwt)
 app.post('/article/edit/:id', passport.authenticate('jwt', { session: false}), async function (req, res) {
 	// Récuperation des paramètres
 	const id = req.params.id
-	const data = req.body
+	let body = req.body
 
-	const editedArticle = await articlesRepository.editArticle(id, data)
-	
-	res.json(editedArticle)
+	// Vérification que la modification soit faite par l'auteur
+	const userid = req.user.id
+
+	if (await isAuteurArticle(userid, id)) {
+		body.id_auteur = userid
+		const editedArticle = await articlesRepository.editArticle(id, body)
+		res.json(editedArticle)
+	} else {
+		res.json({ error: 'Vous n\'êtes pas l\'auteur de cet article.' })
+	}
+
 })
 
 // Créer compte
@@ -139,7 +143,6 @@ app.post('/login', async function (req, res) {
 		res.status(401).json({ error: 'Veuillez renseigner un mot de passe de minimum 5 caractères.' })
 		return
 	}
-	mdp = utilisateursRepository.crypteMdp(mdp)
 
 	const users = await utilisateursRepository.getUtilisateurs()
 	const user = users.find(user => user.email === email)
@@ -149,7 +152,7 @@ app.post('/login', async function (req, res) {
 		return
 	}
 
-	if (mdp !== user.mdp) {
+	if (!await utilisateursRepository.compareMdp(mdp, user.mdp)) {
 		res.status(401).json({ error: 'Mot de passe incorrect.' })
 		return
 	}
@@ -160,7 +163,22 @@ app.post('/login', async function (req, res) {
 			email: user.email,
 			nom: user.nom,
 			prenom: user.prenom
-		}, secret);
+		}, secret)
 
 	res.json({'jwt': tkn })
 })
+
+/**
+ * Contrôle qu'un utilisateur soit l'auteur d'un article
+ * @param idUtilisateur : Identifiant unique de l'utilisateur (id)
+ * @param idArticle : Identifiant unique de l'article (_id)
+ * @return Vrai si l'utilisateur est bien l'auteur, faux sinon
+ */
+async function isAuteurArticle(idUtilisateur, idArticle) {
+	const article = await articlesRepository.getArticle(idArticle)
+
+	if (article.id_auteur == idUtilisateur)
+		return true
+	else
+		return false
+}
